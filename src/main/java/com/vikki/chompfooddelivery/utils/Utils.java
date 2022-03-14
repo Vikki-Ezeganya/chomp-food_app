@@ -31,4 +31,12 @@ public class Utils {
         return generateRandomString(length);
     }
 
+    public String generateCartId(int length) {
+       return generateRandomString(length);
+    }
+
+    public String generateCartItemId(int length) {
+        return generateRandomString(length);
+    }
+
 }

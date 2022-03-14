@@ -1,12 +1,11 @@
 package com.vikki.chompfooddelivery.service.serviceimplementation;
 
 import com.vikki.chompfooddelivery.dto.CartDto;
-import com.vikki.chompfooddelivery.dto.response.ErrorMessage;
-import com.vikki.chompfooddelivery.dto.response.ErrorMessages;
-import com.vikki.chompfooddelivery.exceptions.CartServiceException;
+import com.vikki.chompfooddelivery.dto.CartItemDto;
 import com.vikki.chompfooddelivery.model.Cart;
 import com.vikki.chompfooddelivery.repository.CartRepository;
 import com.vikki.chompfooddelivery.service.CartService;
+import com.vikki.chompfooddelivery.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +18,25 @@ public class CartServiceImpl implements CartService {
     CartRepository cartRepository;
 
     @Override
-    public CartDto createCartItem(CartDto cartDto) {
+    public CartDto createCart(CartDto cartDto) {
 
-//        if(cartRepository.() != null ) throw new CartServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
-        Cart cartItems = new Cart();
+        int i = 0;
+        for(CartItemDto cartItem: cartDto.getCartItems()) {
+            cartItem.setCartItemId(new Utils().generateCartItemId(10));
+            cartItem.setCartDto(cartDto);
+            cartDto.getCartItems().set(i, cartItem);
+            i++;
+        }
+
+        Cart cart = new Cart();
+
         ModelMapper modelmapper = new ModelMapper();
-        modelmapper.map(cartDto, cartItems);
+        modelmapper.map(cartDto, cart);
+        cart.setCartId(new Utils().generateCartId(10));
 
-
-        Cart savedCartItem = cartRepository.save(cartItems);
+        Cart savedCartItem = cartRepository.save(cart);
         CartDto returnValue = new CartDto();
+
 
         modelmapper.map(savedCartItem, returnValue );
 

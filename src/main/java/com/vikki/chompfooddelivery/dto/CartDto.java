@@ -2,11 +2,14 @@ package com.vikki.chompfooddelivery.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CartDto {
 
     private String userId;
     private String cartId;
-    private String productId;
-    private Integer quantity;
+    private List<CartItemDto> cartItems;
+    private Integer cartQuantity;
+    private Integer subTotal;
 }
