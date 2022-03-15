@@ -5,6 +5,7 @@ import com.vikki.chompfooddelivery.dto.request.CartRequest;
 import com.vikki.chompfooddelivery.dto.response.CartResponse;
 import com.vikki.chompfooddelivery.service.CartService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/cart")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class CartController {
 
     private CartService cartService;

@@ -47,7 +47,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Boolean emailVerificationStatus = false;
 
-    @OneToOne(mappedBy = "user" )
-    private Cart cart;
+//    @OneToOne(mappedBy="userDetails", cascade = CascadeType.ALL)
+//    private Address address;
+
 
 }

@@ -8,6 +8,5 @@ public class CartItemDto {
     private String cartItemId;
     private String menuId;
     private Integer quantity;
-    private CartDto cartDto;
-
+//    private CartDto cartDto;
 }
