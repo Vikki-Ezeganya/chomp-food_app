@@ -29,7 +29,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     public MenuItemDto createMenuItem(MenuItemDto menuItemDto) {
 
-        if(menuItemRepository.findMenuItemByName(menuItemDto.getName()) != null)
+        if(menuItemRepository.findByName(menuItemDto.getName()) != null)
             throw new MenuItemServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
         ModelMapper modelmapper = new ModelMapper();
@@ -43,8 +43,8 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public MenuItemDto updateMenuItem(String menuId, MenuItemDto menuItemDto) {
-        var menuItem = menuItemRepository.findMenuItemsByMenuId(menuId);
+    public MenuItemDto updateMenuItem(Long menuId, MenuItemDto menuItemDto) {
+        var menuItem = menuItemRepository.findByMenuId(menuId);
         if (menuItem == null)
             throw new MenuItemServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
@@ -80,9 +80,9 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public MenuItemDto getMenuItem(String menuItemId) {
+    public MenuItemDto getMenuItem(Long menuItemId) {
 
-        var foundMenuItem = menuItemRepository.findMenuItemsByMenuId(menuItemId);
+        var foundMenuItem = menuItemRepository.findByMenuId( menuItemId);
         if(foundMenuItem == null) throw new MenuItemServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
         ModelMapper modelmapper = new ModelMapper();
@@ -92,12 +92,12 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public void deleteMenuItem(String menuId) {
+    public void deleteMenuItem(Long menuItemId) {
 
-        if (menuItemRepository.findMenuItemsByMenuId(menuId) == null)
+        if (menuItemRepository.findByMenuId(menuItemId) == null)
             throw new MenuItemServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
-        MenuItem menuItemToDelete = menuItemRepository.findMenuItemsByMenuId(menuId);
+        MenuItem menuItemToDelete = menuItemRepository.findByMenuId(menuItemId);
         menuItemRepository.delete(menuItemToDelete);
     }
 

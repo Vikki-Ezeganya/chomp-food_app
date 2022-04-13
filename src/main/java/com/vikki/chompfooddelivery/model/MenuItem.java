@@ -8,9 +8,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
-@Entity(name = "menu_item")
+@Entity(name = "menuItem")
 public class MenuItem implements Serializable {
 
     @Getter(AccessLevel.NONE)
@@ -19,10 +20,9 @@ public class MenuItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
-
+    @Column(nullable = true)
     private String menuId;
 
     @Column(nullable = false, length = 100)
@@ -42,4 +42,7 @@ public class MenuItem implements Serializable {
 
     @Column(nullable = false)
     private Date dateCreated;
+
+    @OneToMany(targetEntity = CartItem.class, mappedBy = "menuItem", cascade = CascadeType.ALL)
+    private List<CartItem> cartItems;
 }

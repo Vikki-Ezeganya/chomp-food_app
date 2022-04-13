@@ -1,7 +1,9 @@
 package com.vikki.chompfooddelivery.service;
 
-import com.vikki.chompfooddelivery.dto.CartDto;
+
+import com.vikki.chompfooddelivery.dto.CartItemDto;
 
 public interface CartService {
-    CartDto createCart(CartDto cartDto);
+    Integer addMenuItemsToCart(CartItemDto cartItemDto);
+
 }

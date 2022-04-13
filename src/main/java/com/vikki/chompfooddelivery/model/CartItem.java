@@ -1,30 +1,37 @@
 package com.vikki.chompfooddelivery.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity(name = "cartItems")
-@Getter
-@Setter
-public class CartItem {
+@Entity
+@Data
+@Table(name = "cart_item")
+public class CartItem implements Serializable {
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = -3322472324407808867L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @JsonProperty("quantity")
-    private Integer quantity;
-
-//    private MenuItem menuItem;
-    @JsonProperty("menuId")
-    private String menuItemId;
+//    @Column(nullable = true)
+//    private String cartItemId;
 
     @ManyToOne
-    @JoinColumn(name = "CART_ID")
-    private Cart cart;
+    @JoinColumn(name = "users_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "menuItem_id")
+    private MenuItem menuItem;
+
+    @Column(nullable = false)
+    private Integer quantity;
 
 }

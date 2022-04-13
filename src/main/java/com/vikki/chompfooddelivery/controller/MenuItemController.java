@@ -40,7 +40,7 @@ public class MenuItemController {
     }
 
     @GetMapping("/{menuItemId}")
-    public MenuItemResponse getMenuItem(@PathVariable String menuItemId) {
+    public MenuItemResponse getMenuItem(@PathVariable Long menuItemId) {
 
         MenuItemDto gottenMenuItem = menuItemService.getMenuItem(menuItemId);
         ModelMapper modelMapper = new ModelMapper();
@@ -60,7 +60,7 @@ public class MenuItemController {
     }
 
     @PutMapping(path = "/{menuId}")
-    public MenuItemResponse updateMenuItem(@PathVariable String menuId, @RequestBody MenuItemRequest request) {
+    public MenuItemResponse updateMenuItem(@PathVariable Long menuId, @RequestBody MenuItemRequest request) {
 
         ModelMapper modelMapper = new ModelMapper();
         MenuItemDto menuItemDto = modelMapper.map(request, MenuItemDto.class);
@@ -71,7 +71,7 @@ public class MenuItemController {
     }
 
     @DeleteMapping(path = "/{menuId}")
-    public OperationStatusModel deleteMenuItem(@PathVariable String menuId) {
+    public OperationStatusModel deleteMenuItem(@PathVariable Long menuId) {
 
         OperationStatusModel model = new OperationStatusModel();
         model.setOperationName(RequestOperationName.DELETE.name());

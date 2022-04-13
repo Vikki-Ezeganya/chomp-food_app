@@ -1,84 +1,58 @@
 package com.vikki.chompfooddelivery.service.serviceimplementation;
 
-import com.vikki.chompfooddelivery.dto.CartDto;
 import com.vikki.chompfooddelivery.dto.CartItemDto;
-import com.vikki.chompfooddelivery.model.Cart;
+import com.vikki.chompfooddelivery.exceptions.MenuItemServiceException;
+import com.vikki.chompfooddelivery.exceptions.UserServiceException;
 import com.vikki.chompfooddelivery.model.CartItem;
+import com.vikki.chompfooddelivery.model.MenuItem;
 import com.vikki.chompfooddelivery.model.User;
-import com.vikki.chompfooddelivery.repository.CartRepository;
+import com.vikki.chompfooddelivery.repository.CartItemRepository;
+import com.vikki.chompfooddelivery.repository.MenuItemRepository;
 import com.vikki.chompfooddelivery.repository.UserRepository;
 import com.vikki.chompfooddelivery.service.CartService;
-import com.vikki.chompfooddelivery.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class CartServiceImpl implements CartService {
 
-    CartRepository cartRepository;
-
-    @Autowired
+    CartItemRepository cartRepository;
     UserRepository userRepository;
+    MenuItemRepository menuItemRepository;
 
     @Override
-    public CartDto createCart(CartDto cartDto) {
+    public Integer addMenuItemsToCart(CartItemDto cartItemDto) {
+        Integer newQuantity = cartItemDto.getQuantity();
 
-        int i = 0;
-        for(CartItemDto cartItem: cartDto.getCartItems()) {
+        User user = null;
+        MenuItem menuItem = null;
 
-            cartItem.setCartItemId(new Utils().generateCartItemId(10));
+        var optionalUser = userRepository.findById(cartItemDto.getUserId());
+        if(optionalUser.isPresent()) user = optionalUser.get();
 
-            log.info("cart item::{}",cartItem);
+        var optionalMenuItem = menuItemRepository.findById(cartItemDto.getMenuId());
+        if(optionalMenuItem.isPresent())  menuItem = optionalMenuItem.get();
 
-//            cartItem.setCartDto(cartDto);
-            cartDto.getCartItems().set(i, cartItem);
+        var cartItem = cartRepository.findByUserIdAndMenuItemId(cartItemDto.getUserId(),
+                cartItemDto.getMenuId());
+        CartItem cartItemToSave = new CartItem();
 
-            i++;
+        if (cartItem != null) {
+            newQuantity = cartItem.getQuantity() + cartItemDto.getQuantity();
+        } else {
+            cartItemToSave.setUser(user);
+            cartItemToSave.setMenuItem(menuItem);
         }
 
-        //Get Cart
-        log.info("cart dto::{}",cartDto);
+        cartItemToSave.setQuantity(newQuantity);
+        cartRepository.save(cartItemToSave);
 
-        log.info("cart item dto get items::{}", cartDto.getCartItems());
-
-
-        User user = userRepository.findByUserId(cartDto.getUserId());
-        Cart cart = new Cart();
-
-        cart.setCartId(new Utils().generateCartId(10));
-        cart.setCartQuantity(cartDto.getCartQuantity());
-        cart.setUser(user);
-        cart.saveCartItems(cartDto.getCartItems());
-        cart.setSubTotal(cartDto.getSubTotal());
-
-
-        log.info("cart object new::{}", cart);
-        log.info("cart items ::{}", cart.getCartItems());
-
-
-        log.info("I am here");
-        Cart savedCartItem = null;
-
-        savedCartItem = cartRepository.save(cart);
-
-        log.info("Saved cart item::{}", savedCartItem);
-
-        CartDto returnValue = new CartDto();
-
-        ModelMapper modelmapper = new ModelMapper();
-        modelmapper.map(savedCartItem, returnValue );
-
-        return  returnValue;
+        return newQuantity;
     }
 
 }
