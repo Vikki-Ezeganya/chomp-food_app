@@ -34,4 +34,13 @@ public class CartItem implements Serializable {
     @Column(nullable = false)
     private Integer quantity;
 
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "id=" + id +
+                ", user=" + user +
+                ", menuItem=" + menuItem +
+                ", quantity=" + quantity +
+                '}';
+    }
 }
