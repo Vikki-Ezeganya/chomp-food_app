@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -74,6 +76,25 @@ public class CartServiceImpl implements CartService {
         }
 
         return cartItemDto;
+    }
+
+    @Override
+    public void deleteCartItem(Long cartItemId) {
+        var optionalCartItem = cartRepository.findById(cartItemId);
+        CartItem cartItemToDelete = null;
+        if(optionalCartItem.isPresent()) {
+            cartItemToDelete = optionalCartItem.get();
+            cartRepository.delete(cartItemToDelete);
+        } else {
+            throw new CartServiceException(ErrorMessages.NO_RECORD_FOUND.name());
+        }
+    }
+
+    @Override
+    public List<CartItem> getAllCartItems(Long userId) {
+        var cartItems = cartRepository.findByUserId(userId);
+        cartRepository.findAll();
+        return null;
     }
 
 }

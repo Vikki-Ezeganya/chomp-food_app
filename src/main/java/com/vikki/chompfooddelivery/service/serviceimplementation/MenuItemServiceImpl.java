@@ -27,7 +27,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     MenuItemRepository menuItemRepository;
 
     @Override
-    public MenuItemDto createMenuItem(MenuItemDto menuItemDto) {
+    public MenuItemDto createMenuItem(MenuItemDto menuItemDto) throws MenuItemServiceException {
 
         if(menuItemRepository.findByName(menuItemDto.getName()) != null)
             throw new MenuItemServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
@@ -43,7 +43,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public MenuItemDto updateMenuItem(Long menuId, MenuItemDto menuItemDto) {
+    public MenuItemDto updateMenuItem(Long menuId, MenuItemDto menuItemDto) throws MenuItemServiceException{
         var menuItem = menuItemRepository.findByMenuId(menuId);
         if (menuItem == null)
             throw new MenuItemServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
@@ -80,7 +80,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public MenuItemDto getMenuItem(Long menuItemId) {
+    public MenuItemDto getMenuItem(Long menuItemId) throws MenuItemServiceException{
 
         var foundMenuItem = menuItemRepository.findByMenuId( menuItemId);
         if(foundMenuItem == null) throw new MenuItemServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
@@ -92,7 +92,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public void deleteMenuItem(Long menuItemId) {
+    public void deleteMenuItem(Long menuItemId) throws MenuItemServiceException{
 
         if (menuItemRepository.findByMenuId(menuItemId) == null)
             throw new MenuItemServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
