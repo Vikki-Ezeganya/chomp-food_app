@@ -27,8 +27,13 @@ public class CartItemController {
 
     @GetMapping
     public List<CartItem> getAllItemsInCart() {
-        cartService.getAllCartItems();
+       return cartService.getAllCartItems();
+    }
 
+    @GetMapping("/{cartItemId}")
+    public CartItem getItemInCart(@PathVariable(name = "cartItemId") Long cartItemId){
+        cartItem = cartService.getCartItemById(cartItemId);
+        return null;
     }
 
     @PostMapping("/add")

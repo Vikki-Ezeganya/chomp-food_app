@@ -25,6 +25,11 @@ public class CartServiceImpl implements CartService {
     CartItemRepository cartRepository;
 
     @Override
+    public List<CartItem> getAllCartItems() {
+        return cartRepository.findAll();
+    }
+
+    @Override
     public Integer addMenuItemsToCart(CartItemDto cartItemDto) {
         Integer newQuantity = cartItemDto.getQuantity();
 
@@ -88,13 +93,6 @@ public class CartServiceImpl implements CartService {
         } else {
             throw new CartServiceException(ErrorMessages.NO_RECORD_FOUND.name());
         }
-    }
-
-    @Override
-    public List<CartItem> getAllCartItems(Long userId) {
-        var cartItems = cartRepository.findByUserId(userId);
-        cartRepository.findAll();
-        return null;
     }
 
 }
