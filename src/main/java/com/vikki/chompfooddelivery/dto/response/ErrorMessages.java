@@ -21,7 +21,7 @@ public enum ErrorMessages {
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    protected void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

@@ -25,7 +25,7 @@ public class MenuItemController {
     @GetMapping
     public List<MenuItemResponse> getAllMenuItems
             (@RequestParam(value = "page", defaultValue = "0") int page,
-             @RequestParam(value = "limit", defaultValue = "1" ) int limit ) {
+             @RequestParam(value = "limit", defaultValue = "5" ) int limit ) {
         var listOfMenuItem = menuItemService.getAllMenuItems(page, limit);
         List<MenuItemResponse> listOfMenuItemResponse = new ArrayList<>();
 

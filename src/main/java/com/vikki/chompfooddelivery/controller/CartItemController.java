@@ -15,7 +15,9 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/cart")
@@ -26,14 +28,28 @@ public class CartItemController {
     private CartService cartService;
 
     @GetMapping
-    public List<CartItem> getAllItemsInCart() {
-       return cartService.getAllCartItems();
+    public List<CartItemResponse> getAllItemsInCart() {
+       var allCartItemsDto = cartService.getAllCartItems();
+       CartItemResponse cartItemResponse = new CartItemResponse();
+       List<CartItemResponse> listOfCartItemResponse = new ArrayList<>();
+
+       allCartItemsDto.forEach(cartItemDto -> {
+           cartItemResponse.setMenuItemId(cartItemDto.getMenuItem().getId());
+           cartItemResponse.setQuantity(cartItemDto.getQuantity());
+           listOfCartItemResponse.add(cartItemResponse);
+       });
+
+       return listOfCartItemResponse;
     }
 
     @GetMapping("/{cartItemId}")
-    public CartItem getItemInCart(@PathVariable(name = "cartItemId") Long cartItemId){
-        cartItem = cartService.getCartItemById(cartItemId);
-        return null;
+    public CartItemResponse getItemInCart(@PathVariable(name = "cartItemId") Long cartItemId){
+        var cartItem = cartService.getCartItemById(cartItemId);
+        CartItemResponse cartItemResponse = new CartItemResponse();
+
+        cartItemResponse.setMenuItem(cartItem.getMenuItem());
+        cartItemResponse.setQuantity(cartItem.getQuantity());
+        return cartItemResponse;
     }
 
     @PostMapping("/add")
@@ -42,9 +58,10 @@ public class CartItemController {
         CartItemDto cartItemDto = new CartItemDto();
 
         cartItemDto.setUserId(cartItemRequest.getUserId());
-        cartItemDto.setMenuId(cartItemRequest.getMenuId());
+        cartItemDto.setMenuItemId(cartItemRequest.getMenuId());
         cartItemDto.setQuantity(cartItemRequest.getQuantity());
-        var noOfItems = this.cartService.addMenuItemsToCart(cartItemDto);
+
+        var noOfItems = cartService.addMenuItemsToCart(cartItemDto);
 
         return noOfItems + " item(s) added!";
     }

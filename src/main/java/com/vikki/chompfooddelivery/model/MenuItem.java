@@ -43,6 +43,6 @@ public class MenuItem implements Serializable {
     @Column(nullable = false)
     private Date dateCreated;
 
-    @OneToMany(targetEntity = CartItem.class, mappedBy = "menuItem", cascade = CascadeType.ALL)
-    private List<CartItem> cartItems;
+//    @OneToMany(targetEntity = CartItem.class, mappedBy = "menuItem", cascade = CascadeType.ALL)
+//    private List<CartItem> cartItems;
 }

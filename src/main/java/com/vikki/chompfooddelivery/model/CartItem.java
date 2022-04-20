@@ -20,14 +20,14 @@ public class CartItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(nullable = true)
-//    private String cartItemId;
+    @Column(nullable = true)
+    private String cartItemId;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "users_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "menuItem_id")
     private MenuItem menuItem;
 

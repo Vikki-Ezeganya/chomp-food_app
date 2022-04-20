@@ -37,8 +37,8 @@ public class User implements Serializable {
     @Column(nullable = false, length=50)
     private String email;
 
-    @OneToMany(targetEntity = CartItem.class, mappedBy = "user", cascade = CascadeType.ALL)
-    private List<CartItem> cartItem;
+//    @OneToMany(targetEntity = CartItem.class, mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<CartItem> cartItem;
 
     @Column(nullable = false)
     private UserRole role;

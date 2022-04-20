@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,8 +26,29 @@ public class CartServiceImpl implements CartService {
     CartItemRepository cartRepository;
 
     @Override
-    public List<CartItem> getAllCartItems() {
-        return cartRepository.findAll();
+    public List<CartItemDto> getAllCartItems() {
+        var allCartItems = cartRepository.findAll();
+        CartItemDto cartItemDto = new CartItemDto();
+
+        List<CartItemDto> allCartItemsDto = new ArrayList<>();
+        for(CartItem item : allCartItems) {
+            cartItemDto.setMenuItem(item.getMenuItem());
+            cartItemDto.setQuantity(item.getQuantity());
+            allCartItemsDto.add(cartItemDto);
+        }
+
+        return allCartItemsDto;
+    }
+
+    @Override
+    public CartItem getCartItemById(Long cartItemId) {
+        var optionalCartItem = cartRepository.findById(cartItemId);
+        CartItem cartItem = null;
+        if(optionalCartItem.isPresent())
+            cartItem = optionalCartItem.get();
+        else throw new CartServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        return cartItem;
     }
 
     @Override
@@ -37,10 +59,10 @@ public class CartServiceImpl implements CartService {
         user.setId(cartItemDto.getUserId());
 
         MenuItem menuItem = new MenuItem();
-        menuItem.setId(cartItemDto.getMenuId());
+        menuItem.setId(cartItemDto.getMenuItem().getId());
 
         var cartItem = cartRepository.findByUserIdAndMenuItemId(cartItemDto.getUserId(),
-                cartItemDto.getMenuId());
+                cartItemDto.getMenuItem().getId());
         CartItem cartItemToSave = new CartItem();
 
         if (cartItem != null) {
@@ -60,7 +82,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartItemDto editCartItem(Long cartItemId, Integer quantity) {
+    public CartItemDto editCartItem(Long cartItemId, Integer quantity) throws CartServiceException {
 
         CartItem cartItem  = null;
         var optionalCartItem = cartRepository.findById(cartItemId);
@@ -84,7 +106,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCartItem(Long cartItemId) {
+    public void deleteCartItem(Long cartItemId) throws CartServiceException {
         var optionalCartItem = cartRepository.findById(cartItemId);
         CartItem cartItemToDelete = null;
         if(optionalCartItem.isPresent()) {

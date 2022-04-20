@@ -10,5 +10,6 @@ public interface CartService {
     Integer addMenuItemsToCart(CartItemDto cartItemDto);
     CartItemDto editCartItem(Long cartItemId, Integer quantity);
     void deleteCartItem(Long cartItemId);
-    List<CartItem> getAllCartItems();
+    List<CartItemDto> getAllCartItems();
+    CartItem getCartItemById(Long cartItemId);
 }
