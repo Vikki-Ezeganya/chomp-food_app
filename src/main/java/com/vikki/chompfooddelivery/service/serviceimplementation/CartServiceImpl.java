@@ -51,6 +51,8 @@ public class CartServiceImpl implements CartService {
         return cartItem;
     }
 
+
+
     @Override
     public Integer addMenuItemsToCart(CartItemDto cartItemDto) {
         Integer newQuantity = cartItemDto.getQuantity();
@@ -115,6 +117,14 @@ public class CartServiceImpl implements CartService {
         } else {
             throw new CartServiceException(ErrorMessages.NO_RECORD_FOUND.name());
         }
+    }
+
+    @Override
+    public String deleteCartItems() {
+        var cartItem = cartRepository.findAll();
+        if (!cartItem.isEmpty()) cartRepository.deleteAll();
+            else throw new CartServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+        return "All cart items removed!";
     }
 
 }

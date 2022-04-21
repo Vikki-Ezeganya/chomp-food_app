@@ -88,4 +88,9 @@ public class CartItemController {
 
     }
 
+    @DeleteMapping
+    public String removeAllItemsInCart(){
+        return cartService.deleteCartItems();
+    }
+
 }
