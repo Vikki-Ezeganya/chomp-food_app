@@ -69,7 +69,7 @@ public class CartServiceImpl implements CartService {
         var allCartItems = cartRepository.findAll();
         Integer cartItemsPrice = 0;
         for (CartItem cartItem : allCartItems) {
-            var cartItemPrice = cartItem.getMenuItem().getPrice();
+            Long cartItemPrice = cartItem.getMenuItem().getPrice() * cartItem.getQuantity();
             cartItemsPrice = Math.toIntExact( cartItemsPrice + cartItemPrice);
         }
         return cartItemsPrice;
