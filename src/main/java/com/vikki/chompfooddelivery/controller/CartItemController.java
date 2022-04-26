@@ -30,11 +30,13 @@ public class CartItemController {
     @GetMapping
     public List<CartItemResponse> getAllItemsInCart() {
        var allCartItemsDto = cartService.getAllCartItems();
-       CartItemResponse cartItemResponse = new CartItemResponse();
        List<CartItemResponse> listOfCartItemResponse = new ArrayList<>();
 
        allCartItemsDto.forEach(cartItemDto -> {
+           CartItemResponse cartItemResponse = new CartItemResponse();
+
            cartItemResponse.setMenuItemId(cartItemDto.getMenuItem().getId());
+           cartItemResponse.setMenuItem(cartItemDto.getMenuItem());
            cartItemResponse.setQuantity(cartItemDto.getQuantity());
            listOfCartItemResponse.add(cartItemResponse);
        });
@@ -50,6 +52,16 @@ public class CartItemController {
         cartItemResponse.setMenuItem(cartItem.getMenuItem());
         cartItemResponse.setQuantity(cartItem.getQuantity());
         return cartItemResponse;
+    }
+
+    @GetMapping("/numberOfCartItems")
+    public Integer getTotalNumberOfCartItems(){
+        return cartService.getNumberOfCartItems();
+    }
+
+    @GetMapping("/cartSubTotal")
+    public Integer getCartSubTotal() {
+        return cartService.getCartSubTotal();
     }
 
     @PostMapping("/add")
@@ -72,8 +84,13 @@ public class CartItemController {
 
         CartItemDto cartItem = cartService.editCartItem(cartItemId, quantity);
 
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(cartItem, CartItemResponse.class);
+        CartItemResponse cartItemResponse = new CartItemResponse();
+
+        cartItemResponse.setMenuItemId(cartItem.getMenuItemId());
+        cartItemResponse.setMenuItem(cartItem.getMenuItem());
+        cartItemResponse.setQuantity(cartItem.getQuantity());
+
+        return cartItemResponse;
     }
 
     @DeleteMapping(path = "/remove/{cartItemId}")

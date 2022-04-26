@@ -12,5 +12,7 @@ public interface CartService {
     void deleteCartItem(Long cartItemId);
     List<CartItemDto> getAllCartItems();
     CartItem getCartItemById(Long cartItemId);
+    Integer getNumberOfCartItems();
+    Integer getCartSubTotal();
     String deleteCartItems();
 }
