@@ -16,7 +16,7 @@ public class DeliveryFeeController {
 
     @PostMapping
     public ResponseEntity<String> addDeliveryFee(@RequestParam Integer amount){
-        deliveryFeeService.createDeliveryService(amount);
+        deliveryFeeService.createDeliveryFee(amount);
         return new ResponseEntity<>("Delivery amount: " + amount + " entered", HttpStatus.OK);
     }
 }
