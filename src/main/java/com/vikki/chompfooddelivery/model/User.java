@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Entity(name = "users")
@@ -36,9 +35,6 @@ public class User implements Serializable {
 
     @Column(nullable = false, length=50)
     private String email;
-
-//    @OneToMany(targetEntity = CartItem.class, mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<CartItem> cartItem;
 
     @Column(nullable = false)
     private UserRole role;

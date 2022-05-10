@@ -19,4 +19,9 @@ public class DeliveryFeeController {
         deliveryFeeService.createDeliveryFee(amount);
         return new ResponseEntity<>("Delivery amount: " + amount + " entered", HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public Integer getDeliveryFee(Integer id) {
+        return deliveryFeeService.getDeliveryFee(id);
+    }
 }
