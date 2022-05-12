@@ -32,9 +32,9 @@ public class AddressController {
         return modelMapper.map(savedAddress, AddressDetailsResponse.class);
     }
 
-    @GetMapping(path = "/{addressId}")
-    public ResponseEntity<AddressDetailsResponse> getAddress(@PathVariable String addressId) {
-        var address = addressDetailsService.getAddress(addressId);
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<AddressDetailsResponse> getAddress(@PathVariable Long userId) {
+        var address = addressDetailsService.getAddress(userId);
 
         ModelMapper modelMapper = new ModelMapper();
         AddressDetailsResponse response = modelMapper.map(address, AddressDetailsResponse.class);

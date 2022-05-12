@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,8 +24,10 @@ public class Address implements Serializable {
     @Column(length = 10, nullable = false)
     private String addressId;
 
-    @Column(length = 10, nullable = true)
-    private String userId;
+//    @Column(length = 10, nullable = true)
+    @OneToOne
+    @JoinColumn(name = "user_Id")
+    private User user;
 
     @Column(length = 50, nullable = false)
     private String street;

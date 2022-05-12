@@ -8,12 +8,9 @@ import lombok.Setter;
 import java.io.Serializable;
 
 @Data
-public class UserDto  implements Serializable {
+public class UserDto {
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private static final long serialVersionUID = 2181828139010238135L;
-
+    private Long id;
     private String userId;
     private String firstName;
     private String lastName;

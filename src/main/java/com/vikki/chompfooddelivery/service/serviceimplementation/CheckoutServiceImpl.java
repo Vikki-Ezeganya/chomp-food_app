@@ -1,9 +1,8 @@
 package com.vikki.chompfooddelivery.service.serviceimplementation;
 
+import com.vikki.chompfooddelivery.dto.AddressDto;
 import com.vikki.chompfooddelivery.dto.UserDto;
-import com.vikki.chompfooddelivery.model.Address;
 import com.vikki.chompfooddelivery.model.CheckoutInfo;
-import com.vikki.chompfooddelivery.model.User;
 import com.vikki.chompfooddelivery.service.CheckoutService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +23,21 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Override
     public CheckoutInfo prepareCheckoutInfo() {
-        Integer subtotal = cartService.getCartSubTotal();
-        Integer deliveryFee = deliveryFeeService.getDeliveryFee(1);
-        var cartItems = cartService.getAllCartItems();
-        var address = getDeliveryAddress();
-        var nameOfUser = getUser().getFirstName() + getUser().getLastName();
 
+        Integer subtotal = cartService.getCartSubTotal();
+        Integer deliveryFee = deliveryFeeService.getDeliveryFee(2).getAmount();
+        var cartItems = cartService.getAllCartItems();
+
+        var userId = getUser().getId();
+        var address = getDeliveryAddress(userId);
+
+        String nameOfUser = getUser().getFirstName() + getUser().getLastName();
+        var phoneNumber = getUser().getPhoneNumber();
 
         CheckoutInfo checkoutInfo = new CheckoutInfo();
         checkoutInfo.setNameOfUser(nameOfUser);
-        checkoutInfo.setPhoneNumber();
-        checkoutInfo.setDeliveryAddress();
+        checkoutInfo.setPhoneNumber(phoneNumber);
+        checkoutInfo.setDeliveryAddress(address);
         checkoutInfo.setDeliveryFee(deliveryFee);
         checkoutInfo.setQuantity(cartService.getNumberOfCartItems());
         checkoutInfo.setSubtotal(subtotal);
@@ -49,8 +52,8 @@ public class CheckoutServiceImpl implements CheckoutService {
         return subtotal + deliveryFee;
     }
 
-    private Address getDeliveryAddress() {
-        return null;
+    private AddressDto getDeliveryAddress(Long userId) {
+        return addressService.getAddress(userId);
     }
 
     private UserDto getUser() {

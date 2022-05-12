@@ -34,7 +34,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
 
-        if(userRepository.findUserByEmail(userDto.getEmail()) != null ) throw new UserServiceException("Record already exists!");
+        if(userRepository.findUserByEmail(userDto.getEmail()) != null )
+            throw new UserServiceException("Record already exists!");
 
         ModelMapper modelmapper = new ModelMapper();
         User user = modelmapper.map(userDto, User.class);

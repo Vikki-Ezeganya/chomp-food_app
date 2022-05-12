@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AddressDetailsRepository extends JpaRepository<Address,Long> {
     Address findByAddressId(String addressId);
-
+    Address findByUserId(Long id);
 }

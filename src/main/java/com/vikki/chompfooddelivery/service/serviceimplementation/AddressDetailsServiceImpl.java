@@ -3,6 +3,7 @@ package com.vikki.chompfooddelivery.service.serviceimplementation;
 import com.vikki.chompfooddelivery.dto.AddressDto;
 import com.vikki.chompfooddelivery.exceptions.AddressDetailsServiceException;
 import com.vikki.chompfooddelivery.model.Address;
+import com.vikki.chompfooddelivery.model.User;
 import com.vikki.chompfooddelivery.repository.AddressDetailsRepository;
 import com.vikki.chompfooddelivery.service.AddressDetailsService;
 import com.vikki.chompfooddelivery.utils.Utils;
@@ -22,8 +23,13 @@ public class AddressDetailsServiceImpl implements AddressDetailsService {
     public AddressDto createAddress(AddressDto addressDto) {
 
         ModelMapper modelMapper = new ModelMapper();
+
         Address addressToSave = new Address();
-        addressToSave.setUserId(addressDto.getUserId());
+
+        User user = new User();
+        user.setId(addressDto.getUserId());
+
+        addressToSave.setUser(user);
         addressToSave.setStreet(addressDto.getStreet());
         addressToSave.setCity(addressDto.getCity());
         addressToSave.setState(addressDto.getState());
@@ -37,8 +43,8 @@ public class AddressDetailsServiceImpl implements AddressDetailsService {
     }
 
     @Override
-    public AddressDto getAddress(String addressId) {
-        Address address = addressDetailsRepository.findByAddressId(addressId);
+    public AddressDto getAddress(Long userId) throws AddressDetailsServiceException {
+        Address address = addressDetailsRepository.findByUserId(userId);
         if (address == null) throw new AddressDetailsServiceException("Address does not exist");
 
         ModelMapper modelMapper = new ModelMapper();
@@ -46,7 +52,7 @@ public class AddressDetailsServiceImpl implements AddressDetailsService {
     }
 
     @Override
-    public AddressDto editAddress(String addressId, AddressDto addressDto) {
+    public AddressDto editAddress(String addressId, AddressDto addressDto) throws AddressDetailsServiceException {
         Address address = addressDetailsRepository.findByAddressId(addressId);
         if ( address == null)
             throw new AddressDetailsServiceException("Address does not exist");
@@ -64,12 +70,11 @@ public class AddressDetailsServiceImpl implements AddressDetailsService {
     }
 
     @Override
-    public void deleteAddress(String addressId) {
+    public void deleteAddress(String addressId) throws AddressDetailsServiceException{
         Address address = addressDetailsRepository.findByAddressId(addressId);
         if(address == null) throw new AddressDetailsServiceException("address does not exist");
 
         addressDetailsRepository.delete(address);
     }
-
 
 }
