@@ -32,6 +32,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         if(menuItemRepository.findByName(menuItemDto.getName()) != null)
             throw new MenuItemServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
+
         ModelMapper modelmapper = new ModelMapper();
         MenuItem menuitem = modelmapper.map(menuItemDto, MenuItem.class);
         menuitem.setMenuId(new Utils().generateMenuItemId(10));

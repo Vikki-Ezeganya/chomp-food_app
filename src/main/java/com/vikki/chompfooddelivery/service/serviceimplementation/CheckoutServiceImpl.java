@@ -25,7 +25,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     public CheckoutInfo prepareCheckoutInfo() {
 
         Integer subtotal = cartService.getCartSubTotal();
-        Integer deliveryFee = deliveryFeeService.getDeliveryFee(2).getAmount();
+        Integer deliveryFee = deliveryFeeService.getDeliveryFee(1000).getAmount();
         var cartItems = cartService.getAllCartItems();
 
         var userId = getUser().getId();

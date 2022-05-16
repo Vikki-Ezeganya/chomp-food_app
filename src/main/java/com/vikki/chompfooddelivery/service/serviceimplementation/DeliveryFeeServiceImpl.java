@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -46,10 +47,16 @@ public class DeliveryFeeServiceImpl implements DeliveryFeeService {
 
     @Override
     public void removeDeliveryFee(Integer amount) throws DeliveryFeeServiceException {
-        var deliveryFee = deliveryFeeRepository.findByAmount(amount);
+//        var deliveryFee = deliveryFeeRepository.findByAmount(amount);
 
-        if (deliveryFee != null) deliveryFeeRepository.delete(deliveryFee);
-        else throw new DeliveryFeeServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+//        deliveryFeeRepository.deleteAllByAmount(amount);
+        if(deliveryFeeRepository.findAll().isEmpty()) throw new DeliveryFeeServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        deliveryFeeRepository.findAll().forEach(deliveryFee -> {
+            if(deliveryFee.getAmount().equals(amount)) {
+                deliveryFeeRepository.delete(deliveryFee);
+            }
+        });
 
     }
 

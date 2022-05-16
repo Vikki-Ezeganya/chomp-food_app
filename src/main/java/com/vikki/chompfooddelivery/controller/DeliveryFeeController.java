@@ -32,12 +32,12 @@ public class DeliveryFeeController {
     }
 
     @GetMapping("/{amount}")
-    public Integer getDeliveryFee(@PathVariable Integer amount) {
+    public DeliveryFee getDeliveryFee(@PathVariable Integer amount) {
         return deliveryFeeService.getDeliveryFee(amount);
     }
 
-    @DeleteMapping("delete/{amount}")
-    public OperationStatusModel removeDeliveryFee(@PathVariable Integer amount){
+    @DeleteMapping("/delete/{amount}")
+    public ResponseEntity<OperationStatusModel> removeDeliveryFee(@PathVariable Integer amount){
 
         OperationStatusModel operationStatusModel = new OperationStatusModel();
         operationStatusModel.setOperationName(RequestOperationName.DELETE.name());
@@ -45,6 +45,6 @@ public class DeliveryFeeController {
 
         deliveryFeeService.removeDeliveryFee(amount);
 
-        return operationStatusModel;
+        return new ResponseEntity<>(operationStatusModel, HttpStatus.OK);
     }
 }
