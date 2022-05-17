@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class ChompfooddeliveryApplication {
@@ -26,6 +27,11 @@ public class ChompfooddeliveryApplication {
     @Bean(name = "AppProperties")
     public AppProperties appProperties() {
         return  new AppProperties();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
 }
